@@ -37,11 +37,11 @@ export const constantRoutes = [
     hidden: true
   },
 
-  {
-    path: "/404",
-    component: () => import("@/views/404"),
-    hidden: true
-  },
+  // {
+  //   path: "/404",
+  //   component: () => import("@/views/404"),
+  //   hidden: true
+  // },
 
   {
     path: "/",
@@ -168,7 +168,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: "index",
+        path: "/index",
         name: "Form",
         component: () => import("@/views/lostAndFound"),
         meta: { title: "失物招领", icon: "form" }

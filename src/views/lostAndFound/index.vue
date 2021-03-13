@@ -1,28 +1,62 @@
 <template>
-  <div class="dashboard-container">
-    失物招领
+  <div class="tab-container">
+    <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
+      <el-tab-pane
+        v-for="item in tabMapOptions"
+        :key="item.key"
+        :label="item.label"
+        :name="item.key"
+      >
+        <keep-alive>
+          <tab-pane
+            v-if="activeName == item.key"
+            :type="item.key"
+            @create="showCreatedTimes"
+          />
+        </keep-alive>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import TabPane from "./components/TabPane";
 
 export default {
-  name: "Dashboard",
-  computed: {
-    ...mapGetters(["name"])
+  name: "Tab",
+  components: { TabPane },
+  data() {
+    return {
+      tabMapOptions: [
+        { label: "失物", key: "lost" },
+        { label: "失主", key: "found" }
+      ],
+      activeName: "lost",
+      createdTimes: 0
+    };
+  },
+  watch: {
+    activeName(val) {
+      this.$router.push(`${this.$route.path}?tab=${val}`);
+    }
+  },
+  created() {
+    // init the default selected tab
+    const tab = this.$route.query.tab;
+    if (tab) {
+      this.activeName = tab;
+    }
+  },
+  methods: {
+    showCreatedTimes() {
+      this.createdTimes = this.createdTimes + 1;
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
+<style scoped>
+.tab-container {
+  margin: 30px;
 }
 </style>
