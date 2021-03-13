@@ -1,5 +1,11 @@
 <template>
   <div class="tab-container">
+    <!-- 数据图标 -->
+    <el-row>
+      <pie-chart />
+      <hr />
+      <line-chart />
+    </el-row>
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane
         v-for="item in tabMapOptions"
@@ -21,10 +27,12 @@
 
 <script>
 import TabPane from "./components/TabPane";
+import PieChart from "./components/PieChart";
+import LineChart from "./components/LineChart";
 
 export default {
   name: "Tab",
-  components: { TabPane },
+  components: { TabPane, PieChart, LineChart },
   data() {
     return {
       tabMapOptions: [
@@ -32,7 +40,25 @@ export default {
         { label: "失主", key: "found" }
       ],
       activeName: "lost",
-      createdTimes: 0
+      createdTimes: 0,
+      lineChartData: {
+        newVisitis: {
+          expectedData: [100, 120, 161, 134, 105, 160, 165],
+          actualData: [120, 82, 91, 154, 162, 140, 145]
+        },
+        messages: {
+          expectedData: [200, 192, 120, 144, 160, 130, 140],
+          actualData: [180, 160, 151, 106, 145, 150, 130]
+        },
+        purchases: {
+          expectedData: [80, 100, 121, 104, 105, 90, 100],
+          actualData: [120, 90, 100, 138, 142, 130, 130]
+        },
+        shoppings: {
+          expectedData: [130, 140, 141, 142, 145, 150, 160],
+          actualData: [120, 82, 91, 154, 162, 140, 130]
+        }
+      }
     };
   },
   watch: {

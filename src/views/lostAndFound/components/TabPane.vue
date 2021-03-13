@@ -201,7 +201,7 @@ export default {
   },
   created() {
     const routerQuery = this.$router.history.current.query.tab;
-    this.getList(routerQuery);
+    this.getList(routerQuery || "lost");
   },
   methods: {
     // 请求数据
