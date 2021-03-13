@@ -6,6 +6,13 @@
       <el-radio label="fail">审核不通过</el-radio>
       <el-radio label="publish">已经发布</el-radio>
     </el-radio-group>
+    {{ searchValue }}
+    <el-input
+      v-model="searchValue"
+      placeholder="请输入内容id或物品名称进行模糊搜索"
+      prefix-icon="el-icon-search"
+      style="margin: 28px 0px;"
+    />
     <el-table
       key="id"
       :data="showData"
@@ -186,16 +193,23 @@ export default {
         submitor: "",
         submitorId: ""
       },
-      isShowDrawer: false
+      isShowDrawer: false,
+      searchValue: ""
     };
   },
   // 根据radio选择的过滤的类型
   computed: {
     showData() {
       if (this.filterType === "all") return this.list;
-      const filterData = this.list.filter(
+      let filterData = this.list.filter(
         item => item.status === this.filterType
       );
+      if (this.searchValue) {
+        filterData = filterData.filter(item => {
+          const value = `${item.id}${item.goodsName}`;
+          return value.match(this.searchValue);
+        });
+      }
       return filterData;
     }
   },
