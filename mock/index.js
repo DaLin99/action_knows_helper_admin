@@ -3,11 +3,18 @@ const { param2Obj } = require("./utils");
 const lostAndFound = require("./lostAndFound");
 const recruit = require("./recruit");
 const activity = require("./activity");
-
+const forum = require("./forum");
 const user = require("./user");
 const table = require("./table");
 
-const mocks = [...user, ...table, ...lostAndFound, ...recruit, ...activity];
+const mocks = [
+  ...user,
+  ...table,
+  ...lostAndFound,
+  ...recruit,
+  ...activity,
+  ...forum
+];
 
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
