@@ -187,6 +187,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: "/activity",
+    component: Layout,
+    children: [
+      {
+        path: "/activity",
+        name: "activity",
+        component: () => import("@/views/activity/list"),
+        meta: { title: "学院活动", icon: "link" }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true }
 ];
