@@ -119,6 +119,14 @@ export default {
     // 重新发布
     onRePublish() {
       console.log("重新发布");
+    },
+    // 保存
+    onSave() {
+      console.log("保存");
+    },
+    // 删除
+    onDelete() {
+      console.log("删除");
     }
   }
 };

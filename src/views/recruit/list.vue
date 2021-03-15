@@ -1,10 +1,14 @@
 <template>
   <div style="margin:24px">
-    <el-radio-group v-model="filterType" style="margin: 16px 0px;">
-      <el-radio label="all">全部</el-radio>
-      <el-radio label="save">已经保存</el-radio>
-      <el-radio label="publish">已经发布</el-radio>
-    </el-radio-group>
+    <div class="header-select">
+      <el-radio-group v-model="filterType" style="margin: 16px 0px;">
+        <el-radio label="all">全部</el-radio>
+        <el-radio label="save">已经保存</el-radio>
+        <el-radio label="publish">已经发布</el-radio>
+      </el-radio-group>
+      <el-button type="primary" @click="addRecurit"> 新建 </el-button>
+    </div>
+
     <el-input
       v-model="searchValue"
       placeholder="请输入id或岗位类型进行模糊搜索"
@@ -171,7 +175,29 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+    // 新增活动
+    addRecurit() {
+      this.isShowDrawer = !this.isShowDrawer;
+
+      this.form = {
+        jodType: "",
+        description: "",
+        responsibility: "",
+        recuritEndDate: "",
+        salary: "",
+        email: "",
+        educationRequire: "",
+        skillTagList: ""
+      };
     }
   }
 };
 </script>
+<style scoped>
+.header-select {
+  color: red;
+  display: flex;
+  justify-content: space-between;
+}
+</style>

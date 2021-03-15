@@ -1,10 +1,13 @@
 <template>
   <div style="margin:24px">
-    <el-radio-group v-model="filterType" style="margin: 16px 0px;">
-      <el-radio label="all">全部</el-radio>
-      <el-radio label="save">已经保存</el-radio>
-      <el-radio label="publish">已经发布</el-radio>
-    </el-radio-group>
+    <div class="header-select">
+      <el-radio-group v-model="filterType" style="margin: 16px 0px;">
+        <el-radio label="all">全部</el-radio>
+        <el-radio label="save">已经保存</el-radio>
+        <el-radio label="publish">已经发布</el-radio>
+      </el-radio-group>
+      <el-button type="primary" @click="addActivity"> 新建 </el-button>
+    </div>
     <el-input
       v-model="searchValue"
       placeholder="请输入id或活动标题进行模糊搜索"
@@ -130,6 +133,7 @@ export default {
         status: "save",
         place: ""
       },
+      emptyForm: {},
       isShowDrawer: false,
       searchValue: ""
     };
@@ -187,7 +191,34 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+    // 新增活动
+    addActivity() {
+      this.isShowDrawer = !this.isShowDrawer;
+
+      this.form = {
+        title: "",
+        content: "",
+        enterStartDate: "",
+        enterEndDate: "",
+        activityStartDate: "",
+        activityEndDate: "",
+        educationRequire: "",
+        holder: "",
+        enterNums: 0,
+        publisher: "",
+        publishDate: "",
+        status: "save",
+        place: ""
+      };
     }
   }
 };
 </script>
+<style scope>
+.header-select {
+  color: red;
+  display: flex;
+  justify-content: space-between;
+}
+</style>
