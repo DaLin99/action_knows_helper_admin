@@ -169,13 +169,24 @@ export const constantRoutes = [
     children: [
       {
         path: "/index",
-        name: "Form",
+        name: "lostAndFound",
         component: () => import("@/views/lostAndFound"),
         meta: { title: "失物招领", icon: "form" }
       }
     ]
   },
-
+  {
+    path: "/recruit",
+    component: Layout,
+    children: [
+      {
+        path: "/recruit",
+        name: "recruit",
+        component: () => import("@/views/recruit/list"),
+        meta: { title: "招聘信息", icon: "nested" }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true }
 ];

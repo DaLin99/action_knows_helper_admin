@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column align="center" label="地点">
         <template slot-scope="scope">
-          <span>{{ scope.row.goodsName }}</span>
+          <span>{{ scope.row.place }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态" width="100">
@@ -74,16 +74,29 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.status === 'fail'" type="danger"
+          <el-button
+            v-if="scope.row.status === 'fail'"
+            type="danger"
+            @click="onDelete($event, scope.row.id)"
             >删除</el-button
           >
           <div v-else-if="scope.row.status === 'checking'">
-            <el-button type="success">通过</el-button>
-            <el-button type="danger">不通过</el-button>
+            <el-button
+              type="success"
+              @click="onPass($event, scope.row.id, true)"
+              >通过</el-button
+            >
+            <el-button
+              type="danger"
+              @click="onPass($event, scope.row.id, false)"
+              >不通过</el-button
+            >
           </div>
           <div v-else>
             <el-button type="primary">修改</el-button>
-            <el-button type="danger">删除</el-button>
+            <el-button type="danger" @click="onDelete($event, scope.row.id)"
+              >删除</el-button
+            >
           </div>
         </template>
       </el-table-column>
@@ -98,14 +111,14 @@
       :show-close="true"
     >
       <h2>详情</h2>
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="物品名称">
+      <el-form ref="form" :model="form" label-width="80px" :rules="rule">
+        <el-form-item label="物品名称" prop="goodsName">
           <el-input v-model="form.goodsName" />
         </el-form-item>
-        <el-form-item label="地点">
+        <el-form-item label="地点" prop="place">
           <el-input v-model="form.place" />
         </el-form-item>
-        <el-form-item label="时间">
+        <el-form-item label="时间" prop="date">
           <el-col :span="11">
             <el-date-picker
               v-model="form.date"
@@ -115,26 +128,26 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="物品类别">
+        <el-form-item label="物品类别" prop="goodsType">
           <el-select v-model="form.goodsType" placeholder="请选择活动区域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio label="checking">正在审核</el-radio>
             <el-radio label="fail">审核不通过</el-radio>
             <el-radio label="publish">发布</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="描述">
+        <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" type="textarea" />
         </el-form-item>
-        <el-form-item label="Tell">
+        <el-form-item label="Tell" prop="tell">
           <el-input v-model="form.tell" />
         </el-form-item>
-        <el-form-item label="wechat">
+        <el-form-item label="wechat" prop="wechat">
           <el-input v-model="form.wechat" />
         </el-form-item>
         <el-form-item>
@@ -148,7 +161,12 @@
 
 <script>
 import { fetchList } from "@/api/lostAndFound";
-
+/**
+ * 对应状态的操作选项
+ * 正在审核：通过/不通过
+ * 审核不通过：删除
+ * 已经发布：删除/修改
+ */
 export default {
   filters: {
     labelFilter(status) {
@@ -184,8 +202,7 @@ export default {
         place: "",
         date: "",
         goodsType: "",
-        delivery: false,
-        tell: [],
+        tell: "",
         description: "",
         wechat: "",
         imgPath: "",
@@ -194,7 +211,25 @@ export default {
         submitorId: ""
       },
       isShowDrawer: false,
-      searchValue: ""
+      // 输入框输入搜索内容
+      searchValue: "",
+      rule: {
+        goodsName: [
+          { required: true, message: "请输入物品名称", trigger: "blur" }
+        ],
+        place: [{ required: true, message: "请输入地点", trigger: "blur" }],
+        date: [{ required: true, message: "请输入时间", trigger: "blur" }],
+        goodsType: [
+          { required: true, message: "请选择物品类别", trigger: "blur" }
+        ],
+        tell: [{ required: true, message: "请输入Tell", trigger: "blur" }],
+        description: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ],
+        wechat: [{ required: true, message: "请输入wechat", trigger: "blur" }],
+        imgPath: [{ required: true, message: "请输入图片", trigger: "blur" }],
+        status: [{ required: true, message: "请输入状态", trigger: "blur" }]
+      }
     };
   },
   // 根据radio选择的过滤的类型
@@ -214,6 +249,7 @@ export default {
     }
   },
   created() {
+    // 获取列表信息
     const routerQuery = this.$router.history.current.query.tab;
     this.getList(routerQuery || "lost");
   },
@@ -226,23 +262,45 @@ export default {
         this.loading = false;
       });
     },
+    // 点击表格的一行
     rowClick(row, column, event) {
       this.isShowDrawer = !this.isShowDrawer;
       console.log(row.id, column, event);
-      this.form = row;
+      this.form = { ...row };
     },
     // 修改数据
     onSubmit() {
       console.log("submit!");
+      console.log(this.form);
+      this.isShowDrawer = false;
+      const index = this.list.findIndex(item => item.id === this.form.id);
+      console.log(this.list, index, "---");
+      this.list[index] = { ...this.form };
     },
+    // 点击关闭drawer
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
           this.isShowDrawer = false;
-
           done();
         })
         .catch(_ => {});
+    },
+    // 正在审核 - 通过/不通过
+    onPass(e, id, checkRes) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (checkRes) {
+        console.log("通过", id);
+      } else {
+        console.log("不通过", id);
+      }
+    },
+    // 点击删除
+    onDelete(e, id) {
+      e.stopPropagation();
+      e.preventDefault();
+      console.log("点击删除", id);
     }
   }
 };
