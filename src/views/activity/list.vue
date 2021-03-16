@@ -9,7 +9,7 @@
       <div>
         <el-button type="primary" @click="addActivity"> 新建 </el-button>
         <el-button
-          loading="downloadLoading"
+          :loading="downloadLoading"
           type="primary"
           @click="handleDownload"
         >

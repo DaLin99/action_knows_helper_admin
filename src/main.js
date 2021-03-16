@@ -42,6 +42,5 @@ new Vue({
   router,
   store,
   echarts,
-
   render: h => h(App)
 });

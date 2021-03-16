@@ -1,5 +1,7 @@
 const Mock = require("mockjs");
 const { param2Obj } = require("./utils");
+const staff = require("./staff");
+
 const lostAndFound = require("./lostAndFound");
 const recruit = require("./recruit");
 const activity = require("./activity");
@@ -8,6 +10,7 @@ const user = require("./user");
 const table = require("./table");
 
 const mocks = [
+  ...staff,
   ...user,
   ...table,
   ...lostAndFound,

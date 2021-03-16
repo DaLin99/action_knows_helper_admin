@@ -42,12 +42,33 @@ export const constantRoutes = [
     component: () => import("@/views/404"),
     hidden: true
   },
+  // {
+  //   path: "recruit",
+  //   name: "recruit",
+  //   component: () => import("@/views/recruit/list"),
+  //   meta: { title: "招聘信息", icon: "dashboard" }
+  // },
+  {
+    path: "staff-manage",
+    name: "staff-manage",
+    component: Layout,
+    meta: { title: "人员管理", icon: "dashboard" },
+    children: [
+      {
+        path: "/staff-manage",
+        name: "staffManage",
+        component: () => import("@/views/staff/list"),
+        meta: { title: "人员管理", icon: "form" }
+      }
+    ]
+  },
   {
     path: "/lost-found",
+    name: "/lost-found",
     component: Layout,
     children: [
       {
-        path: "/index",
+        path: "/lost-found",
         name: "lostAndFound",
         component: () => import("@/views/lostAndFound"),
         meta: { title: "失物招领", icon: "form" }
@@ -78,6 +99,24 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: "/",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "recruit",
+  //       name: "recruit",
+  //       component: () => import("@/views/recruit/list"),
+  //       meta: { title: "招聘信息", icon: "dashboard" }
+  //     },
+  //     {
+  //       path: "staff-manage",
+  //       name: "staff-manage",
+  //       component: () => import("@/views/staff/list"),
+  //       meta: { title: "人员管理", icon: "dashboard" }
+  //     }
+  //   ]
+  // },
   {
     path: "/forum",
     component: Layout,
@@ -89,9 +128,69 @@ export const constantRoutes = [
         meta: { title: "学院论坛", icon: "el-icon-s-help" }
       }
     ]
-  },
+  }
+  // {
+  //   path: "/staff-manage",
+  //   component: Layout,
+  //   children: [
+  //     {
+  // path: "staff-manage",
+  // name: "1",
+  // component: () => import("@/views/staff/list"),
+  // meta: { title: "人员管理", icon: "dashboard" }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/lost-found",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "/index",
+  //       name: "lostAndFound",
+  //       component: () => import("@/views/lostAndFound"),
+  //       meta: { title: "失物招领", icon: "form" }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/recruit",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "/recruit",
+  //       name: "recruit",
+  //       component: () => import("@/views/recruit/list"),
+  //       meta: { title: "招聘信息", icon: "dashboard" }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/activity",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "/activity",
+  //       name: "activity",
+  //       component: () => import("@/views/activity/list"),
+  //       meta: { title: "学院活动", icon: "link" }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/forum",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "/forum",
+  //       name: "forum",
+  //       component: () => import("@/views/forum/list"),
+  //       meta: { title: "学院论坛", icon: "el-icon-s-help" }
+  //     }
+  //   ]
+  // }
   // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true }
+  // { path: "*", redirect: "/404", hidden: true }
 ];
 
 const createRouter = () =>
