@@ -6,7 +6,16 @@
         <el-radio label="save">已经保存</el-radio>
         <el-radio label="publish">已经发布</el-radio>
       </el-radio-group>
-      <el-button type="primary" @click="addActivity"> 新建 </el-button>
+      <div>
+        <el-button type="primary" @click="addActivity"> 新建 </el-button>
+        <el-button
+          loading="downloadLoading"
+          type="primary"
+          @click="handleDownload"
+        >
+          导出
+        </el-button>
+      </div>
     </div>
     <el-input
       v-model="searchValue"
@@ -135,7 +144,8 @@ export default {
       },
       emptyForm: {},
       isShowDrawer: false,
-      searchValue: ""
+      searchValue: "",
+      downloadLoading: false
     };
   },
   // 根据radio选择的过滤的类型
@@ -211,6 +221,43 @@ export default {
         status: "save",
         place: ""
       };
+    },
+    // TODO:导出excel
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/vendor/Export2Excel")
+        .then(excel => {
+          const tHeader = ["Id", "Title", "Author", "Readings", "Date"];
+          const filterVal = [
+            "id",
+            "title",
+            "author",
+            "pageviews",
+            "display_time"
+          ];
+          const list = this.list;
+          const data = this.formatJson(filterVal, list);
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.filename,
+            autoWidth: this.autoWidth,
+            bookType: this.bookType
+          });
+          this.downloadLoading = false;
+        })
+        .catch(err => console.log(err));
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === "timestamp") {
+            return 2021;
+          } else {
+            return v[j];
+          }
+        })
+      );
     }
   }
 };

@@ -104,13 +104,15 @@
 
     <!-- 修改的抽屉 -->
     <el-drawer
+      style="overflow:auto"
+      custom-class="self-drawer111"
       :with-header="false"
       :visible="isShowDrawer"
       size="44%"
       :before-close="handleClose"
       :show-close="true"
     >
-      <h2>详情</h2>
+      <h2 class="test">详情</h2>
       <el-form ref="form" :model="form" label-width="80px" :rules="rule">
         <el-form-item label="物品名称" prop="goodsName">
           <el-input v-model="form.goodsName" />
@@ -155,6 +157,9 @@
           <el-button @click="handleClose">取消</el-button>
         </el-form-item>
       </el-form>
+      <div v-for="(item, index) in form.imgPath" :key="index">
+        <img :src="item" alt="" />
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -305,3 +310,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.self-drawer111 {
+  overflow: auto !important;
+}
+.test {
+  color: red;
+}
+</style>
