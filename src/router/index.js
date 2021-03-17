@@ -45,7 +45,6 @@ export const constantRoutes = [
     path: "/staff-manage",
     name: "staff-manage",
     component: Layout,
-    meta: { title: "人员管理", icon: "dashboard" },
     children: [
       {
         path: "list",
@@ -57,7 +56,7 @@ export const constantRoutes = [
   },
   {
     path: "/lost-found",
-    name: "/lost-found",
+    name: "lost-found",
     component: Layout,
     children: [
       {

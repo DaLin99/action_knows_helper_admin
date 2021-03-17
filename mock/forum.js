@@ -4,10 +4,10 @@ const data = Mock.mock({
   "items|30": [
     {
       id: "@id",
-      title: "@cword(3,6)",
+      title: "@ctitle",
       content: " @csentence(5,12)",
       publisher: "@cname",
-      publishDate: "@date(yy-mm-dd)",
+      publishDate: "@date(yyyy-MM-dd)",
       readNums: /\d{1,3}/,
       thumbNums: /\d{1,3}/
     }
