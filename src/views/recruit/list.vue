@@ -42,7 +42,12 @@
           <span>{{ scope.row.recruitEndDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="岗位责任">
+      <el-table-column align="center" label="岗位类型">
+        <template slot-scope="scope">
+          <span>{{ scope.row.jodType }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column align="center" label="岗位责任">
         <template slot-scope="scope">
           <p
             v-for="(item, index) in scope.row.responsibility.split('。')"
@@ -51,7 +56,7 @@
             <span>{{ index + 1 }}、{{ item }}</span>
           </p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="工资" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.salary }}</span>

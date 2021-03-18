@@ -6,7 +6,6 @@
       <el-radio label="fail">审核不通过</el-radio>
       <el-radio label="publish">已经发布</el-radio>
     </el-radio-group>
-    {{ searchValue }}
     <el-input
       v-model="searchValue"
       placeholder="请输入内容id或物品名称进行模糊搜索"
@@ -157,9 +156,9 @@
           <el-button @click="handleClose">取消</el-button>
         </el-form-item>
       </el-form>
-      <div v-for="(item, index) in form.imgPath" :key="index">
+      <!-- <div v-for="(item, index) in form.imgPath" :key="index">
         <img :src="item" alt="" />
-      </div>
+      </div> -->
     </el-drawer>
   </div>
 </template>
@@ -314,8 +313,5 @@ export default {
 <style scoped>
 .self-drawer111 {
   overflow: auto !important;
-}
-.test {
-  color: red;
 }
 </style>

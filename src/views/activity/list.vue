@@ -8,13 +8,13 @@
       </el-radio-group>
       <div>
         <el-button type="primary" @click="addActivity"> 新建 </el-button>
-        <el-button
+        <!-- <el-button
           :loading="downloadLoading"
           type="primary"
           @click="handleDownload"
         >
           导出
-        </el-button>
+        </el-button> -->
       </div>
     </div>
     <el-input
@@ -60,14 +60,14 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报名时间" width="150">
+      <el-table-column align="center" label="报名时间" width="100">
         <template slot-scope="scope">
           <span
             >{{ scope.row.enterStartDate }} - {{ scope.row.enterEndDate }}</span
           >
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活动时间" width="150">
+      <el-table-column align="center" label="活动时间" width="100">
         <template slot-scope="scope">
           <span
             >{{ scope.row.activityStartDate }} -
@@ -80,17 +80,17 @@
           <span>{{ scope.row.holder }}-{{ scope.row.place }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报名人数" width="150">
+      <el-table-column align="center" label="报名人数" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.enterNums }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="status" width="150">
+      <!-- <el-table-column align="center" label="status" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.status }}</span>
         </template>
-      </el-table-column>
-      <el-table-column align="center" label="发布信息" width="150">
+      </el-table-column> -->
+      <el-table-column align="center" label="发布信息" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.publisher }}{{ scope.row.publishDate }}</span>
         </template>

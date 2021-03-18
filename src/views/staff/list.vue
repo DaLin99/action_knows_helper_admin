@@ -15,7 +15,7 @@
       </div>
       <el-input
         v-model="searchValue"
-        placeholder="请输入内容id或物品名称进行模糊搜索"
+        placeholder="请输入ID或学号/工号进行模糊搜索"
         prefix-icon="el-icon-search"
         style="margin: 28px 0px;"
       />
@@ -151,6 +151,7 @@ export default {
   computed: {
     showData() {
       let filterTypeData = [];
+      console.log("this.list:", this.list);
       if (this.filterType === "all") {
         filterTypeData = this.list;
       } else {
