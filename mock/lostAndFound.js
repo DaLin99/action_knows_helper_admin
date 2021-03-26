@@ -46,7 +46,7 @@ const lostAndFoundObj = {
 
 module.exports = [
   {
-    url: "/action_knows_helper/lostAndFound/list.*",
+    url: "/lostAndFound/list.*",
     type: "get",
     response: config => {
       const { type } = config.query;

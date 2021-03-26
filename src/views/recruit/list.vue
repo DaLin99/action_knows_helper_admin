@@ -3,12 +3,11 @@
     <div class="header-select">
       <el-radio-group v-model="filterType" style="margin: 16px 0px;">
         <el-radio label="all">全部</el-radio>
-        <el-radio label="save">已经保存</el-radio>
-        <el-radio label="publish">已经发布</el-radio>
+        <el-radio label="0">已经保存</el-radio>
+        <el-radio label="1">已经发布</el-radio>
       </el-radio-group>
       <el-button type="primary" @click="addRecurit"> 新建 </el-button>
     </div>
-
     <el-input
       v-model="searchValue"
       placeholder="请输入id或岗位类型进行模糊搜索"
@@ -39,12 +38,12 @@
       </el-table-column>
       <el-table-column align="center" label="投递结束时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.recruitEndDate }}</span>
+          <span>{{ scope.row.recuritEndDate }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="岗位类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.jodType }}</span>
+          <span>{{ scope.row.jobType }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column align="center" label="岗位责任">
@@ -64,7 +63,7 @@
       </el-table-column>
       <el-table-column align="center" label="邮件地址" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+          <span>{{ scope.row.eMail }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="工作地点" width="150">
@@ -80,6 +79,11 @@
       <el-table-column align="center" label="发布时间" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.publishDate }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="点赞人数" width="150">
+        <template slot-scope="scope">
+          <span>{{ scope.row.thumbUpNums }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -112,16 +116,21 @@ export default {
     return {
       list: [],
       loading: false,
-      filterType: "save",
+      filterType: "0",
       form: {
-        jodType: "",
+        id: "",
+        jobType: "",
         description: "",
         responsibility: "",
         recuritEndDate: "",
         salary: "",
         email: "",
         educationRequire: "",
-        skillTagList: ""
+        skillTagList: "",
+        jobDescription: "",
+        jobResponsibility: "",
+        company: "",
+        address: ""
       },
       isShowDrawer: false,
       searchValue: ""
@@ -134,7 +143,7 @@ export default {
       if (this.filterType === "all") {
         filterTypeData = this.list;
       } else {
-        filterTypeData = this.list.filter(
+        filterTypeData = this.list?.filter(
           item => item.status === this.filterType
         );
         console.log("filterTypeData:", filterTypeData);
@@ -159,7 +168,7 @@ export default {
       this.loading = true;
       fetchList({ type }).then(response => {
         console.log(response.data);
-        this.list = response.data.items;
+        this.list = response.data;
         this.loading = false;
       });
     },
@@ -176,24 +185,30 @@ export default {
       this.$confirm("确认关闭？")
         .then(_ => {
           this.isShowDrawer = false;
-
+          this.getList();
           done();
         })
         .catch(_ => {});
     },
     // 新增活动
     addRecurit() {
+      console.log("新建");
       this.isShowDrawer = !this.isShowDrawer;
 
       this.form = {
         jodType: "",
-        description: "",
-        responsibility: "",
+        jodDescription: "",
+        jobResponsibility: "",
+        jodRequirement: "",
         recuritEndDate: "",
         salary: "",
-        email: "",
-        educationRequire: "",
-        skillTagList: ""
+        eMail: "",
+        educationRequirement: "",
+        skillTagList: "",
+        publishDate: "",
+        publisher: "",
+        thumbUpNums: "",
+        status: "0"
       };
     }
   }

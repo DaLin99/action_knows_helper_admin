@@ -12,6 +12,7 @@
       prefix-icon="el-icon-search"
       style="margin: 28px 0px;"
     />
+    {{ showData }}
     <el-table
       key="id"
       :data="showData"
@@ -77,25 +78,23 @@
             v-if="scope.row.status === 'fail'"
             type="danger"
             @click="onDelete($event, scope.row.id)"
-            >删除</el-button
-          >
+          >删除</el-button>
           <div v-else-if="scope.row.status === 'checking'">
             <el-button
               type="success"
               @click="onPass($event, scope.row.id, true)"
-              >通过</el-button
-            >
+            >通过</el-button>
             <el-button
               type="danger"
               @click="onPass($event, scope.row.id, false)"
-              >不通过</el-button
-            >
+            >不通过</el-button>
           </div>
           <div v-else>
             <el-button type="primary">修改</el-button>
-            <el-button type="danger" @click="onDelete($event, scope.row.id)"
-              >删除</el-button
-            >
+            <el-button
+              type="danger"
+              @click="onDelete($event, scope.row.id)"
+            >删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -262,8 +261,10 @@ export default {
     getList(type) {
       this.loading = true;
       fetchList({ type }).then(response => {
-        this.list = response.data.items;
+        console.log("response", response);
+        this.list = response.data;
         this.loading = false;
+        console.log(response.data);
       });
     },
     // 点击表格的一行
