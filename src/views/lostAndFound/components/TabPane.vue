@@ -2,9 +2,9 @@
   <div>
     <el-radio-group v-model="filterType" style="margin: 16px 0px;">
       <el-radio label="all">全部</el-radio>
-      <el-radio label="checking">正在审核</el-radio>
-      <el-radio label="fail">审核不通过</el-radio>
-      <el-radio label="publish">已经发布</el-radio>
+      <el-radio label="0">正在审核</el-radio>
+      <el-radio label="1">已经发布</el-radio>
+      <el-radio label="2">审核不通过</el-radio>
     </el-radio-group>
     <el-input
       v-model="searchValue"
@@ -12,7 +12,6 @@
       prefix-icon="el-icon-search"
       style="margin: 28px 0px;"
     />
-    {{ showData }}
     <el-table
       key="id"
       :data="showData"
@@ -27,7 +26,6 @@
         v-loading="loading"
         align="center"
         label="ID"
-        width="200"
         fixed
         element-loading-text="请给我点时间！"
       >
@@ -37,12 +35,12 @@
       </el-table-column>
       <el-table-column align="center" label="时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.time }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="物品名称">
         <template slot-scope="scope">
-          <span>{{ scope.row.goodsName }}</span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="地点">
@@ -59,7 +57,7 @@
       </el-table-column>
       <el-table-column align="center" label="描述">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="tell" width="150">
@@ -75,26 +73,28 @@
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.status === 'fail'"
+            v-if="scope.row.status === '2'"
             type="danger"
             @click="onDelete($event, scope.row.id)"
-          >删除</el-button>
-          <div v-else-if="scope.row.status === 'checking'">
+            >删除</el-button
+          >
+          <div v-else-if="scope.row.status === '0'">
             <el-button
               type="success"
               @click="onPass($event, scope.row.id, true)"
-            >通过</el-button>
+              >通过</el-button
+            >
             <el-button
               type="danger"
               @click="onPass($event, scope.row.id, false)"
-            >不通过</el-button>
+              >不通过</el-button
+            >
           </div>
           <div v-else>
             <el-button type="primary">修改</el-button>
-            <el-button
-              type="danger"
-              @click="onDelete($event, scope.row.id)"
-            >删除</el-button>
+            <el-button type="danger" @click="onDelete($event, scope.row.id)"
+              >删除</el-button
+            >
           </div>
         </template>
       </el-table-column>
@@ -112,16 +112,18 @@
     >
       <h2 class="test">详情</h2>
       <el-form ref="form" :model="form" label-width="80px" :rules="rule">
-        <el-form-item label="物品名称" prop="goodsName">
-          <el-input v-model="form.goodsName" />
+        <el-form-item label="物品名称" prop="title">
+          <el-input v-model="form.title" />
         </el-form-item>
         <el-form-item label="地点" prop="place">
           <el-input v-model="form.place" />
         </el-form-item>
-        <el-form-item label="时间" prop="date">
+        <el-form-item label="时间" prop="time">
           <el-col :span="11">
             <el-date-picker
-              v-model="form.date"
+              v-model="form.time"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
               type="date"
               placeholder="选择日期"
               style="width: 100%;"
@@ -136,13 +138,20 @@
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="checking">正在审核</el-radio>
-            <el-radio label="fail">审核不通过</el-radio>
-            <el-radio label="publish">发布</el-radio>
+            <el-radio label="0">正在审核</el-radio>
+            <el-radio label="2">审核不通过</el-radio>
+            <el-radio label="1">发布</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" />
+        <el-form-item
+          v-if="form.status === '2'"
+          label="不通过的原因"
+          prop="reason"
+        >
+          <el-input v-model="form.reason" placeholder="不通过的原因" />
+        </el-form-item>
+        <el-form-item label="描述" prop="content">
+          <el-input v-model="form.content" type="textarea" />
         </el-form-item>
         <el-form-item label="Tell" prop="tell">
           <el-input v-model="form.tell" />
@@ -163,7 +172,7 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/lostAndFound";
+import { fetchList, ok } from "@/api/lostAndFound";
 /**
  * 对应状态的操作选项
  * 正在审核：通过/不通过
@@ -174,17 +183,17 @@ export default {
   filters: {
     labelFilter(status) {
       const statusMap = {
-        publish: "已经发布",
-        fail: "审核不通过",
-        checking: "正在审核"
+        "1": "已经发布",
+        "2": "审核不通过",
+        "0": "正在审核"
       };
       return statusMap[status];
     },
     tagFilter(status) {
       const statusMap = {
-        publish: "success",
-        fail: "danger",
-        checking: "warning"
+        "1": "success",
+        "2": "danger",
+        "0": "warning"
       };
       return statusMap[status];
     }
@@ -199,39 +208,39 @@ export default {
     return {
       list: [],
       loading: false,
-      filterType: "checking",
+      filterType: "0",
       form: {
-        goodsName: "",
+        title: "",
         place: "",
-        date: "",
-        goodsType: "",
+        time: "",
+        type: "",
         tell: "",
-        description: "",
+        content: "",
         wechat: "",
         imgPath: "",
         status: "",
         submitor: "",
-        submitorId: ""
+        submitorId: "",
+        reason: ""
       },
       isShowDrawer: false,
       // 输入框输入搜索内容
       searchValue: "",
       rule: {
-        goodsName: [
-          { required: true, message: "请输入物品名称", trigger: "blur" }
-        ],
+        title: [{ required: true, message: "请输入物品名称", trigger: "blur" }],
         place: [{ required: true, message: "请输入地点", trigger: "blur" }],
-        date: [{ required: true, message: "请输入时间", trigger: "blur" }],
+        time: [{ required: true, message: "请输入时间", trigger: "blur" }],
         goodsType: [
           { required: true, message: "请选择物品类别", trigger: "blur" }
         ],
         tell: [{ required: true, message: "请输入Tell", trigger: "blur" }],
-        description: [
-          { required: true, message: "请输入描述", trigger: "blur" }
-        ],
+        content: [{ required: true, message: "请输入描述", trigger: "blur" }],
         wechat: [{ required: true, message: "请输入wechat", trigger: "blur" }],
         imgPath: [{ required: true, message: "请输入图片", trigger: "blur" }],
-        status: [{ required: true, message: "请输入状态", trigger: "blur" }]
+        status: [{ required: true, message: "请输入状态", trigger: "blur" }],
+        reason: [
+          { require: true, message: "请输入不通过的原因", trigger: "blur" }
+        ]
       }
     };
   },
@@ -292,11 +301,12 @@ export default {
         .catch(_ => {});
     },
     // 正在审核 - 通过/不通过
-    onPass(e, id, checkRes) {
+    async onPass(e, id, checkRes) {
       e.stopPropagation();
       e.preventDefault();
       if (checkRes) {
-        console.log("通过", id);
+        await ok({ id });
+        this.$message("发布成功");
       } else {
         console.log("不通过", id);
       }
