@@ -6,12 +6,14 @@
       <hr />
       <line-chart />
     </el-row> -->
+    {{ activeName }}
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane
         v-for="item in tabMapOptions"
         :key="item.key"
         :label="item.label"
         :name="item.key"
+        @click="show(item.key)"
       >
         <keep-alive>
           <tab-pane
@@ -61,11 +63,7 @@ export default {
       }
     };
   },
-  watch: {
-    activeName(val) {
-      this.$router.push({name: val});
-    }
-  },
+
   created() {
     // init the default selected tab
     const tab = this.$route.query.tab;
@@ -76,6 +74,9 @@ export default {
   methods: {
     showCreatedTimes() {
       this.createdTimes = this.createdTimes + 1;
+    },
+    show(key) {
+      console.log("key:", key);
     }
   }
 };

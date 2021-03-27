@@ -81,6 +81,11 @@
           <span>{{ scope.row.publishDate }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="查看次数" width="150">
+        <template slot-scope="scope">
+          <span>{{ scope.row.readNums }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="点赞人数" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.thumbUpNums }}</span>

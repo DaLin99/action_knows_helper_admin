@@ -60,7 +60,6 @@
       <el-form-item label="活动地点" prop="activityPlace">
         <el-input v-model="form.activityPlace" />
       </el-form-item>
-      {{ form.status }}
       <el-form-item label="图片" prop="imageUrl">
         <el-upload
           class="avatar-uploader"
@@ -140,19 +139,13 @@ export default {
     // 从列表点进来要初始化
   },
   methods: {
-    // 提交
-    onSubmit() {
-      // 验空 格式 post
-      this.$message("submit!");
-    },
-
     // 重置
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     // 发布
     async onPublish(ruleForm) {
-      this.form.publishDate = dayjs().format("YYYY-MM-DD HH:mm");
+      this.form.publishDate = dayjs().format("YYYY-MM-DD");
       this.form.status = "1";
       this.$refs[ruleForm].validate(async valid => {
         if (valid) {

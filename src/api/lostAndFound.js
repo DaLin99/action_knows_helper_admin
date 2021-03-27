@@ -1,17 +1,40 @@
 import request from "@/utils/request";
 // 获取list
-export function fetchList(type) {
+export function fetchList() {
   return request({
-    url: "/lostAndFound/list",
-    method: "get",
-    params: type
+    url: "/lostAndFound/adminList",
+    method: "get"
   });
 }
 // 通过申请
-export function ok(params) {
+export function approve(params) {
   return request({
     url: "/lostAndFound/approve",
     method: "post",
     data: params
+  });
+}
+// 不通过申请
+export function reject(params) {
+  return request({
+    url: "/lostAndFound/reject",
+    method: "post",
+    data: params
+  });
+}
+// 删除
+export function deleteLostAndFound(data) {
+  return request({
+    url: "lostAndFound/delete",
+    method: "post",
+    data
+  });
+}
+// 发布
+export function publishLostAndFound(data) {
+  return request({
+    url: "lostAndFound/adminEdit",
+    method: "post",
+    data
   });
 }

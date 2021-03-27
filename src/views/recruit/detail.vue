@@ -65,16 +65,15 @@
           :auto-upload="false"
           :multiple="false"
         >
-          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">
-          <span
-            v-if="form.status === '0'"
-            @click="onPublish('form')"
-          >发布</span>
+          <span v-if="form.status === '0'" @click="onPublish('form')"
+            >发布</span
+          >
           <span v-else @click="onPublish('form')">重新发布</span>
         </el-button>
         <el-button @click="resetForm('form')">重置</el-button>
@@ -82,12 +81,11 @@
           v-if="form.status === '0'"
           type="primary"
           @click="onSave('form')"
-        >保存</el-button>
-        <el-button
-          v-if="form.id"
-          type="danger"
-          @click="onDelete"
-        >删除</el-button>
+          >保存</el-button
+        >
+        <el-button v-if="form.id" type="danger" @click="onDelete"
+          >删除</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -122,7 +120,14 @@ export default {
   },
   data() {
     return {
-      jobTypeOptions: ["前端", "后端", "产品", "测试", "运营"],
+      jobTypeOptions: [
+        "前端开发实习",
+        "后端开发实习",
+        "产品实习",
+        "测试实习",
+        "前端开发校招",
+        "后端开发校招"
+      ],
       rule: {
         jobType: [
           { required: true, message: "请输入岗位类型", trigger: "blur" }
@@ -157,9 +162,7 @@ export default {
         skillTagList: [
           { required: true, message: "请输入岗位技能要求", trigger: "blur" }
         ],
-        imageUrl: [
-          { required: true, message: "请选择图片", trigger: "blur" }
-        ]
+        imageUrl: [{ required: true, message: "请选择图片", trigger: "blur" }]
       }
     };
   },
@@ -223,7 +226,7 @@ export default {
       }
     },
     onUpload(e) {
-      upload.uploadImg(e, this, 'form', 'imageUrl');
+      upload.uploadImg(e, this, "form", "imageUrl");
     }
   }
 };
@@ -241,7 +244,7 @@ export default {
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 .avatar-uploader-icon {
   font-size: 28px;
