@@ -60,9 +60,7 @@
       <el-form-item label="活动地点" prop="activityPlace">
         <el-input v-model="form.activityPlace" />
       </el-form-item>
-      <<<<<<< HEAD
       {{ form.status }}
-      =======
       <el-form-item label="图片" prop="imageUrl">
         <el-upload
           class="avatar-uploader"
@@ -77,7 +75,6 @@
         </el-upload>
       </el-form-item>
 
-      >>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
       <el-form-item>
         <el-button type="primary" @click="onPublish('form')">
           <span v-if="form.status !== '1'">发布</span>
@@ -99,12 +96,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import dayjs from "dayjs";
-import { publishActivity, delActivity } from "@/api/activity";
-=======
 import upload from "@/utils/upload";
->>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
 
 export default {
   props: {
@@ -120,7 +112,7 @@ export default {
           email: "",
           educationRequire: "",
           skillTagList: "",
-          imageUrl: ''
+          imageUrl: ""
         };
       }
     }
@@ -137,15 +129,8 @@ export default {
         holder: [
           { required: true, message: "请输入活动组织者", trigger: "blur" }
         ],
-<<<<<<< HEAD
-        activityPlace: [
-          { required: true, message: "请输入活动地点", trigger: "blur" }
-=======
         place: [{ required: true, message: "请输入活动地点", trigger: "blur" }],
-        imageUrl: [
-          { required: true, message: "请选择图片", trigger: "blur" }
->>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
-        ]
+        imageUrl: [{ required: true, message: "请选择图片", trigger: "blur" }]
       }
     };
   },
@@ -207,21 +192,11 @@ export default {
       });
     },
     // 删除
-<<<<<<< HEAD
-    async onDelete(id) {
-      const res = await delActivity({
-        id: this.form.id
-      });
-      if (res.code === 1) {
-        this.$message("删除成功");
-      }
-=======
     onDelete() {
       console.log("删除");
     },
     onUpload(e) {
-      upload.uploadImg(e, this, 'form', 'imageUrl');
->>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
+      upload.uploadImg(e, this, "form", "imageUrl");
     }
   }
 };
