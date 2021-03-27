@@ -97,7 +97,8 @@
 
 <script>
 import upload from "@/utils/upload";
-
+import dayjs from "dayjs";
+import { publishActivity, delActivity } from "@/api/activity";
 export default {
   props: {
     form: {
@@ -192,8 +193,14 @@ export default {
       });
     },
     // 删除
-    onDelete() {
+    async onDelete() {
       console.log("删除");
+      const res = await delActivity({
+        id: this.form.id
+      });
+      if (res.code === 1) {
+        this.$message("删除成功");
+      }
     },
     onUpload(e) {
       upload.uploadImg(e, this, "form", "imageUrl");

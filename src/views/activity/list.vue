@@ -51,9 +51,7 @@
       </el-table-column>
       <el-table-column align="center" label="内容">
         <template slot-scope="scope">
-          <p v-for="(item, index) in scope.row.activityContent" :key="index">
-            <span>{{ index + 1 }}、{{ item }}</span>
-          </p>
+          <span>{{ scope.row.activityContent }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="报名时间">
