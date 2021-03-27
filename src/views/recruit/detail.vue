@@ -152,13 +152,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    // 重置
-    onReset() {
-      this.$message({
-        message: "cancel!",
-        type: "warning"
-      });
-    },
     // 发布
     onPublish(ruleForm) {
       this.form.publishDate = dayjs().format("YYYY-MM-DD HH:mm");
@@ -203,7 +196,6 @@ export default {
       });
     },
     async onDelete() {
-      console.log("s");
       const res = await deleteRecruit({
         id: this.form.id
       });

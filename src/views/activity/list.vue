@@ -3,8 +3,8 @@
     <div class="header-select">
       <el-radio-group v-model="filterType" style="margin: 16px 0px;">
         <el-radio label="all">全部</el-radio>
-        <el-radio label="save">已经保存</el-radio>
-        <el-radio label="publish">已经发布</el-radio>
+        <el-radio label="0">已经保存</el-radio>
+        <el-radio label="1">已经发布</el-radio>
       </el-radio-group>
       <div>
         <el-button type="primary" @click="addActivity"> 新建 </el-button>
@@ -37,7 +37,6 @@
         v-loading="loading"
         align="center"
         label="ID"
-        width="200"
         fixed
         element-loading-text="请给我点时间！"
       >
@@ -47,27 +46,24 @@
       </el-table-column>
       <el-table-column align="center" label="标题">
         <template slot-scope="scope">
-          <span>{{ scope.row.title }}</span>
+          <span>{{ scope.row.activityTitle }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="内容">
         <template slot-scope="scope">
-          <p
-            v-for="(item, index) in scope.row.content.split('。')"
-            :key="index"
-          >
+          <p v-for="(item, index) in scope.row.activityContent" :key="index">
             <span>{{ index + 1 }}、{{ item }}</span>
           </p>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报名时间" width="100">
+      <el-table-column align="center" label="报名时间">
         <template slot-scope="scope">
           <span
             >{{ scope.row.enterStartDate }} - {{ scope.row.enterEndDate }}</span
           >
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活动时间" width="100">
+      <el-table-column align="center" label="活动时间">
         <template slot-scope="scope">
           <span
             >{{ scope.row.activityStartDate }} -
@@ -75,24 +71,26 @@
           >
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活动信息" width="150">
+      <el-table-column align="center" label="活动信息">
         <template slot-scope="scope">
-          <span>{{ scope.row.holder }}-{{ scope.row.place }}</span>
+          <span>{{ scope.row.holder }}-{{ scope.row.activityPlace }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报名人数" width="100">
+      <el-table-column align="center" label="状态">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | tagFilter">
+            {{ scope.row.status | labelFilter }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="报名人数">
         <template slot-scope="scope">
           <span>{{ scope.row.enterNums }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column align="center" label="status" width="150">
+      <el-table-column align="center" label="查看次数">
         <template slot-scope="scope">
-          <span>{{ scope.row.status }}</span>
-        </template>
-      </el-table-column> -->
-      <el-table-column align="center" label="发布信息" width="120">
-        <template slot-scope="scope">
-          <span>{{ scope.row.publisher }}{{ scope.row.publishDate }}</span>
+          <span>{{ scope.row.readNums }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -115,6 +113,22 @@ import { fetchList } from "@/api/activity";
 import detail from "./detail";
 export default {
   components: { detail },
+  filters: {
+    labelFilter(status) {
+      const statusMap = {
+        "1": "已经发布",
+        "0": "已经保存"
+      };
+      return statusMap[status];
+    },
+    tagFilter(status) {
+      const statusMap = {
+        "1": "success",
+        "0": "warning"
+      };
+      return statusMap[status];
+    }
+  },
   props: {
     type: {
       type: String,
@@ -125,22 +139,20 @@ export default {
     return {
       list: [],
       loading: false,
-      filterType: "save",
+      filterType: "0",
       form: {
-        id: 1,
-        title: "",
-        content: "",
-        enterStartDate: "",
-        enterEndDate: "",
-        activityStartDate: "",
+        activityContent: "",
         activityEndDate: "",
-        educationRequire: "",
+        activityPlace: "",
+        activityStartDate: "",
+        activityTitle: "",
+        enterEndDate: "",
+        enterNums: "",
+        enterStartDate: "",
         holder: "",
-        enterNums: 0,
+        isCollect: "",
         publisher: "",
-        publishDate: "",
-        status: "save",
-        place: ""
+        readNums: ""
       },
       emptyForm: {},
       isShowDrawer: false,
@@ -180,7 +192,7 @@ export default {
       this.loading = true;
       fetchList({ type }).then(response => {
         console.log(response.data);
-        this.list = response.data.items;
+        this.list = response.data;
         this.loading = false;
       });
     },
@@ -197,7 +209,7 @@ export default {
       this.$confirm("确认关闭？")
         .then(_ => {
           this.isShowDrawer = false;
-
+          this.getList();
           done();
         })
         .catch(_ => {});
@@ -205,7 +217,6 @@ export default {
     // 新增活动
     addActivity() {
       this.isShowDrawer = !this.isShowDrawer;
-
       this.form = {
         title: "",
         content: "",
@@ -218,7 +229,6 @@ export default {
         enterNums: 0,
         publisher: "",
         publishDate: "",
-        status: "save",
         place: ""
       };
     },
