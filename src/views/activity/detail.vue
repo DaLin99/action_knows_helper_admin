@@ -52,6 +52,19 @@
       <el-form-item label="活动地点" prop="place">
         <el-input v-model="form.place" />
       </el-form-item>
+      <el-form-item label="图片" prop="imageUrl">
+        <el-upload
+          class="avatar-uploader"
+          action="#"
+          :show-file-list="false"
+          :on-change="onUpload"
+          :auto-upload="false"
+          :multiple="false"
+        >
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="onSubmit">
@@ -67,6 +80,8 @@
 </template>
 
 <script>
+import upload from "@/utils/upload";
+
 export default {
   props: {
     form: {
@@ -80,7 +95,8 @@ export default {
           salary: "",
           email: "",
           educationRequire: "",
-          skillTagList: ""
+          skillTagList: "",
+          imageUrl: ''
         };
       }
     }
@@ -95,7 +111,10 @@ export default {
         holder: [
           { required: true, message: "请输入活动组织者", trigger: "blur" }
         ],
-        place: [{ required: true, message: "请输入活动地点", trigger: "blur" }]
+        place: [{ required: true, message: "请输入活动地点", trigger: "blur" }],
+        imageUrl: [
+          { required: true, message: "请选择图片", trigger: "blur" }
+        ]
       }
     };
   },
@@ -127,6 +146,9 @@ export default {
     // 删除
     onDelete() {
       console.log("删除");
+    },
+    onUpload(e) {
+      upload.uploadImg(e, this, 'form', 'imageUrl');
     }
   }
 };
@@ -135,5 +157,28 @@ export default {
 <style scoped>
 .line {
   text-align: center;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

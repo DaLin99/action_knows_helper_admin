@@ -56,11 +56,25 @@
       <el-form-item label="技能标签" prop="skillTagList">
         <el-input v-model="form.skillTagList" placeholder="以中文逗号分隔" />
       </el-form-item>
+      <el-form-item label="图片" prop="imageUrl">
+        <el-upload
+          class="avatar-uploader"
+          action="#"
+          :show-file-list="false"
+          :on-change="onUpload"
+          :auto-upload="false"
+          :multiple="false"
+        >
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary">
-          <span v-if="form.status === '0'" @click="onPublish('form')"
-            >发布</span
-          >
+          <span
+            v-if="form.status === '0'"
+            @click="onPublish('form')"
+          >发布</span>
           <span v-else @click="onPublish('form')">重新发布</span>
         </el-button>
         <el-button @click="resetForm('form')">重置</el-button>
@@ -68,11 +82,12 @@
           v-if="form.status === '0'"
           type="primary"
           @click="onSave('form')"
-          >保存</el-button
-        >
-        <el-button v-if="form.id" type="danger" @click="onDelete"
-          >删除</el-button
-        >
+        >保存</el-button>
+        <el-button
+          v-if="form.id"
+          type="danger"
+          @click="onDelete"
+        >删除</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -81,7 +96,7 @@
 <script>
 import { publishRecruit, deleteRecruit, editRecruit } from "@/api/recruit";
 import dayjs from "dayjs";
-
+import upload from "@/utils/upload";
 export default {
   props: {
     form: {
@@ -99,7 +114,8 @@ export default {
           skillTagList: "",
           publishDate: "",
           publisher: "",
-          thumbUpNums: ""
+          thumbUpNums: "",
+          imageUrl: ""
         };
       }
     }
@@ -140,6 +156,9 @@ export default {
         ],
         skillTagList: [
           { required: true, message: "请输入岗位技能要求", trigger: "blur" }
+        ],
+        imageUrl: [
+          { required: true, message: "请选择图片", trigger: "blur" }
         ]
       }
     };
@@ -210,6 +229,9 @@ export default {
       if (res.code === 1) {
         this.$message("删除成功");
       }
+    },
+    onUpload(e) {
+      upload.uploadImg(e, this, 'form', 'imageUrl');
     }
   }
 };
@@ -218,5 +240,28 @@ export default {
 <style scoped>
 .line {
   text-align: center;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
