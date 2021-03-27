@@ -9,18 +9,7 @@
       type="index"
       style="width: 100%"
     >
-      <el-table-column
-        align="center"
-        label="ID"
-        width="200"
-        fixed
-        element-loading-text="请给我点时间！"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="学号/工号">
+      <el-table-column align="center" label="学号/工号" fixed>
         <template slot-scope="scope">
           <span>{{ scope.row.cardId }}</span>
         </template>
@@ -30,19 +19,40 @@
           <span>{{ scope.row.cardPassword }}</span>
         </template>
       </el-table-column>
+      <el-table-column
+        align="center"
+        label="身份类型"
+        element-loading-text="请给我点时间！"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.userIdentity }}</span>
+        </template>
+      </el-table-column>
     </el-table>
-    <el-button v-if="showData.length > 0" type="primary">
+    <el-button v-if="showData.length > 0" type="primary" @click="importExcel">
       修改
     </el-button>
   </div>
 </template>
 <script>
+import { importUser } from "@/api/staff";
+
 export default {
   props: {
     showData: {
       type: Array,
       default: function() {
         return [];
+      }
+    }
+  },
+  methods: {
+    async importExcel() {
+      const { code } = await importUser({
+        arr: this.showData
+      });
+      if (code === 1) {
+        this.$message("批量新建成功");
       }
     }
   }

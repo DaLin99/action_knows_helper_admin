@@ -4,9 +4,8 @@
       <div class="header-select">
         <el-radio-group v-model="filterType" style="margin: 16px 0px;">
           <el-radio label="all">全部</el-radio>
-          <el-radio :label="0">普通学生</el-radio>
-          <el-radio :label="1">团学干部</el-radio>
-          <el-radio :label="2">管理员</el-radio>
+          <el-radio label="0">普通学生</el-radio>
+          <el-radio label="1">管理员</el-radio>
         </el-radio-group>
         <div>
           <el-button type="primary" @click="addStaff"> 新建 </el-button>
@@ -52,13 +51,13 @@
         </el-table-column>
         <el-table-column align="center" label="微信昵称">
           <template slot-scope="scope">
-            <span>{{ scope.row.nickName }}</span>
+            <span>{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="身份类别" width="100">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.userIdentify | tagFilter">
-              {{ scope.row.userIdentify | labelFilter }}
+            <el-tag :type="scope.row.userIdentity | tagFilter">
+              {{ scope.row.userIdentity | labelFilter }}
             </el-tag>
           </template>
         </el-table-column>
@@ -102,7 +101,7 @@
 
 <script>
 // import { mapGetters } from "vuex";
-import { fetchList } from "@/api/staff";
+import { fetchList, deleteUser } from "@/api/staff";
 import detail from "./detail";
 import importExcel from "./importExcel";
 import staffTable from "./staffTable";
@@ -112,17 +111,15 @@ export default {
   filters: {
     labelFilter(status) {
       const statusMap = {
-        0: "普通学生",
-        1: "团学干部",
-        2: "管理员"
+        "0": "普通学生",
+        "1": "管理员"
       };
       return statusMap[status];
     },
     tagFilter(status) {
       const statusMap = {
-        0: "success",
-        2: "danger",
-        1: "warning"
+        "0": "success",
+        "1": "warning"
       };
       return statusMap[status];
     }
@@ -138,9 +135,9 @@ export default {
         cardPassword: "",
         nickName: "",
         userAvator: "",
-        userIdentify: ""
+        userIdentity: ""
       },
-      filterType: 0,
+      filterType: "0",
       isShowDrawer: false,
       isShowExcel: false,
       listObj: {},
@@ -156,7 +153,7 @@ export default {
         filterTypeData = this.list;
       } else {
         filterTypeData = this.list.filter(
-          item => Number(item.userIdentify) === Number(this.filterType)
+          item => item.userIdentity === String(this.filterType)
         );
         console.log("filterTypeData:", filterTypeData);
       }
@@ -180,27 +177,30 @@ export default {
       this.loading = true;
       fetchList({}).then(response => {
         console.log(response.data);
-        this.list = response.data.items;
+        this.list = response.data;
         this.loading = false;
       });
     },
     // 点击删除
     onDelete(e, id) {
       this.$confirm("确认删除？")
-        .then(_ => {
+        .then(async _ => {
           console.log("点击", id);
+          const { code } = await deleteUser({ id });
+          if (code === 1) {
+            this.$message("删除成功");
+            this.getList();
+          }
         })
         .catch(_ => {});
     },
     // 新增角色
     addStaff() {
       this.isShowDrawer = !this.isShowDrawer;
-
       this.form = {
-        id: "",
         cardId: "",
         cardPassword: "",
-        userIdentify: ""
+        userIdentity: "0"
       };
     },
     // 修改
@@ -211,10 +211,13 @@ export default {
     },
     // drawer关闭
     handleClose(done) {
+      console.log("关闭1");
       this.$confirm("确认关闭？")
         .then(_ => {
-          this.isShowDrawer = false;
+          console.log("关闭12");
 
+          this.isShowDrawer = false;
+          this.getList();
           done();
         })
         .catch(_ => {});

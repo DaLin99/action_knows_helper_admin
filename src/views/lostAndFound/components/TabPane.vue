@@ -72,7 +72,6 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          {{ scope.row.status }}
           <el-button
             v-if="scope.row.status === '2'"
             type="danger"

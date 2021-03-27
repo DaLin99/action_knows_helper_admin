@@ -6,7 +6,6 @@
       <hr />
       <line-chart />
     </el-row> -->
-    {{ activeName }}
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane
         v-for="item in tabMapOptions"
