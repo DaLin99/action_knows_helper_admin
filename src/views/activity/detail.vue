@@ -60,7 +60,24 @@
       <el-form-item label="活动地点" prop="activityPlace">
         <el-input v-model="form.activityPlace" />
       </el-form-item>
+      <<<<<<< HEAD
       {{ form.status }}
+      =======
+      <el-form-item label="图片" prop="imageUrl">
+        <el-upload
+          class="avatar-uploader"
+          action="#"
+          :show-file-list="false"
+          :on-change="onUpload"
+          :auto-upload="false"
+          :multiple="false"
+        >
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-form-item>
+
+      >>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
       <el-form-item>
         <el-button type="primary" @click="onPublish('form')">
           <span v-if="form.status !== '1'">发布</span>
@@ -82,8 +99,12 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import dayjs from "dayjs";
 import { publishActivity, delActivity } from "@/api/activity";
+=======
+import upload from "@/utils/upload";
+>>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
 
 export default {
   props: {
@@ -91,16 +112,15 @@ export default {
       type: Object,
       default: function() {
         return {
-          activityContent: "",
-          activityEndDate: "",
-          activityPlace: "",
-          activityStartDate: "",
-          activityTitle: "",
-          enterEndDate: "",
-          enterNums: "",
-          enterStartDate: "",
-          holder: "",
-          isCollect: ""
+          jodType: "",
+          description: "",
+          responsibility: "",
+          recuritEndDate: "",
+          salary: "",
+          email: "",
+          educationRequire: "",
+          skillTagList: "",
+          imageUrl: ''
         };
       }
     }
@@ -117,8 +137,14 @@ export default {
         holder: [
           { required: true, message: "请输入活动组织者", trigger: "blur" }
         ],
+<<<<<<< HEAD
         activityPlace: [
           { required: true, message: "请输入活动地点", trigger: "blur" }
+=======
+        place: [{ required: true, message: "请输入活动地点", trigger: "blur" }],
+        imageUrl: [
+          { required: true, message: "请选择图片", trigger: "blur" }
+>>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
         ]
       }
     };
@@ -181,6 +207,7 @@ export default {
       });
     },
     // 删除
+<<<<<<< HEAD
     async onDelete(id) {
       const res = await delActivity({
         id: this.form.id
@@ -188,6 +215,13 @@ export default {
       if (res.code === 1) {
         this.$message("删除成功");
       }
+=======
+    onDelete() {
+      console.log("删除");
+    },
+    onUpload(e) {
+      upload.uploadImg(e, this, 'form', 'imageUrl');
+>>>>>>> f9399d255d33c276e2aa9e8591cc1cdae2fc0bc3
     }
   }
 };
@@ -196,5 +230,28 @@ export default {
 <style scoped>
 .line {
   text-align: center;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

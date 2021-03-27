@@ -72,23 +72,12 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button
-            v-if="scope.row.status === '2'"
-            type="danger"
-            @click="onDelete($event, scope.row.id)"
+          <el-button v-if="scope.row.status === 'fail'" type="danger"
             >删除</el-button
           >
-          <div v-else-if="scope.row.status === '0'">
-            <el-button
-              type="success"
-              @click="onPass($event, scope.row.id, true)"
-              >通过</el-button
-            >
-            <el-button
-              type="danger"
-              @click="onPass($event, scope.row.id, false)"
-              >不通过</el-button
-            >
+          <div v-else-if="scope.row.status === 'checking'">
+            <el-button type="success">通过</el-button>
+            <el-button type="danger">不通过</el-button>
           </div>
           <div v-else>
             <el-button type="primary">修改</el-button>
@@ -261,7 +250,6 @@ export default {
     }
   },
   created() {
-    // 获取列表信息
     const routerQuery = this.$router.history.current.query.tab;
     this.getList(routerQuery || "lost");
   },
@@ -280,16 +268,11 @@ export default {
     rowClick(row, column, event) {
       this.isShowDrawer = !this.isShowDrawer;
       console.log(row.id, column, event);
-      this.form = { ...row };
+      this.form = row;
     },
     // 修改数据
     onSubmit() {
       console.log("submit!");
-      console.log(this.form);
-      this.isShowDrawer = false;
-      const index = this.list.findIndex(item => item.id === this.form.id);
-      console.log(this.list, index, "---");
-      this.list[index] = { ...this.form };
     },
     // 点击关闭drawer
     handleClose(done) {
