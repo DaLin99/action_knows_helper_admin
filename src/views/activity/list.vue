@@ -83,7 +83,7 @@
       </el-table-column>
       <el-table-column align="center" label="报名人数">
         <template slot-scope="scope">
-          <span>{{ scope.row.enterNums }}</span>
+          <span>{{ scope.row.list.length }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="查看次数">
@@ -91,7 +91,54 @@
           <span>{{ scope.row.readNums }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="操作">
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.list.length !== 0"
+            type="primary"
+            @click="showEnterDiag($event, scope.row.id)"
+            >导出报名单</el-button
+          >
+        </template>
+      </el-table-column>
     </el-table>
+    <!-- 报名单 -->
+    <el-dialog
+      title="是否导出报名单"
+      :visible.sync="isShowEnterDiag"
+      width="80%"
+      :before-close="() => (isShowEnterDiag = false)"
+    >
+      <el-table
+        key="id"
+        :data="enterList"
+        border
+        fit
+        highlight-current-row
+        type="index"
+        style="width: 100%"
+      >
+        <el-table-column align="center" label="ID" fixed>
+          <template slot-scope="scope">
+            <span>{{ scope.row.userId }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="学号">
+          <template slot-scope="scope">
+            <span>{{ scope.row.cardId }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="nickName">
+          <template slot-scope="scope">
+            <span>{{ scope.row.nickName }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isShowEnterDiag = false">取 消</el-button>
+        <el-button type="primary" @click="handleDownload">确 定</el-button>
+      </span>
+    </el-dialog>
 
     <!-- 修改的抽屉 -->
     <el-drawer
@@ -107,7 +154,7 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/activity";
+import { fetchList, downloadExcel } from "@/api/activity";
 import detail from "./detail";
 export default {
   components: { detail },
@@ -155,7 +202,9 @@ export default {
       emptyForm: {},
       isShowDrawer: false,
       searchValue: "",
-      downloadLoading: false
+      downloadLoading: false,
+      isShowEnterDiag: false,
+      enterList: []
     };
   },
   // 根据radio选择的过滤的类型
@@ -230,20 +279,22 @@ export default {
         place: ""
       };
     },
-    // TODO:导出excel
+    async showEnterDiag(e, id) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.isShowEnterDiag = true;
+      const { code, data } = await downloadExcel({ id });
+      if (code) {
+        this.enterList = data;
+      }
+    },
     handleDownload() {
       this.downloadLoading = true;
       import("@/vendor/Export2Excel")
         .then(excel => {
-          const tHeader = ["Id", "Title", "Author", "Readings", "Date"];
-          const filterVal = [
-            "id",
-            "title",
-            "author",
-            "pageviews",
-            "display_time"
-          ];
-          const list = this.list;
+          const tHeader = ["Id", "学号", "昵称"];
+          const filterVal = ["userId", "cardId", "nickName"];
+          const list = this.enterList;
           const data = this.formatJson(filterVal, list);
           excel.export_json_to_excel({
             header: tHeader,

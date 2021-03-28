@@ -1,11 +1,11 @@
 <template>
   <div class="tab-container">
     <!-- 数据图标 -->
-    <!-- <el-row>
+    <el-row>
       <pie-chart />
       <hr />
       <line-chart />
-    </el-row> -->
+    </el-row>
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane
         v-for="item in tabMapOptions"

@@ -20,3 +20,12 @@ export function delActivity(data) {
     data
   });
 }
+
+// 导出报名单
+export function downloadExcel(data) {
+  return request({
+    url: "schoolActivity/enterList",
+    method: "post",
+    data
+  });
+}
