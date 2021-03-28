@@ -29,23 +29,22 @@
       </el-table-column>
       <el-table-column align="center" label="标题">
         <template slot-scope="scope">
-          <span>{{ scope.row.title }}</span>
+          <span>{{ scope.row.topicTitle }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="内容">
         <template slot-scope="scope">
-          <span>{{ scope.row.content }}</span>
+          <span>{{ scope.row.topicContent }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="发布者" width="150">
+        <template slot-scope="scope">
+          <span>{{ scope.row.userName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="发布时间" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.publishDate }} </span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="发布者" width="150">
-        <template slot-scope="scope">
-          <span>{{ scope.row.publisher }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="阅读量" width="150">
@@ -55,7 +54,7 @@
       </el-table-column>
       <el-table-column align="center" label="点赞数" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.thumbNums }}</span>
+          <span>{{ scope.row.thumbUpNums }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="150">
@@ -70,7 +69,7 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/forum";
+import { fetchList, delForum } from "@/api/forum";
 export default {
   data() {
     return {
@@ -94,7 +93,6 @@ export default {
         place: ""
       },
       emptyForm: {},
-      isShowDrawer: false,
       searchValue: ""
     };
   },
@@ -120,17 +118,16 @@ export default {
       this.loading = true;
       fetchList({ type }).then(response => {
         console.log(response.data);
-        this.list = response.data.items;
+        this.list = response.data;
         this.loading = false;
       });
     },
 
-    handleDelete(done) {
+    handleDelete(id) {
       this.$confirm("确认删除？")
-        .then(_ => {
-          this.isShowDrawer = false;
-          console.log(done);
-          done();
+        .then(async _ => {
+          await delForum({ id });
+          this.getList();
         })
         .catch(_ => {});
     }
