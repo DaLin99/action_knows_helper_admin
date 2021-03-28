@@ -38,3 +38,12 @@ export function publishLostAndFound(data) {
     data
   });
 }
+
+// 发布
+export function chartsData(data) {
+  return request({
+    url: "lostAndFound/chartsData",
+    method: "get",
+    data
+  });
+}
