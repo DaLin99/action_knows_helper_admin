@@ -60,6 +60,9 @@
       <el-form-item label="活动地点" prop="activityPlace">
         <el-input v-model="form.activityPlace" />
       </el-form-item>
+      <el-form-item label="发布者" prop="publisher">
+        <el-input v-model="form.publisher" placeholder="请输入发布者" />
+      </el-form-item>
       <el-form-item label="图片" prop="imageUrl">
         <el-upload
           class="avatar-uploader"
@@ -69,14 +72,14 @@
           :auto-upload="false"
           :multiple="false"
         >
-          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="onPublish('form')">
-          <span v-if="form.status !== '1'">发布</span>
+          <span v-if="form.status!=='1'">发布</span>
           <span v-else>重新发布</span>
         </el-button>
         <el-button @click="resetForm('form')">重置</el-button>
@@ -84,11 +87,13 @@
           v-if="form.status !== '1'"
           type="primary"
           @click="onSave('form')"
-          >保存</el-button
-        >
-        <el-button v-if="form.status" type="danger" @click="onDelete"
-          >删除</el-button
-        >
+        >保存</el-button>
+        <el-button v-if="form.imageUrl" @click="onResetImg">重新上传图片</el-button>
+        <el-button
+          v-if="form.status"
+          type="danger"
+          @click="onDelete"
+        >删除</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -129,8 +134,9 @@ export default {
         holder: [
           { required: true, message: "请输入活动组织者", trigger: "blur" }
         ],
-        place: [{ required: true, message: "请输入活动地点", trigger: "blur" }],
-        imageUrl: [{ required: true, message: "请选择图片", trigger: "blur" }]
+        activityPlace: [{ required: true, message: "请输入活动地点", trigger: "blur" }],
+        imageUrl: [{ required: true, message: "请选择图片", trigger: "blur" }],
+        publisher: [{ required: true, message: "请输入发布者", trigger: "blur" }]
       }
     };
   },
@@ -197,6 +203,10 @@ export default {
     },
     onUpload(e) {
       upload.uploadImg(e, this, "form", "imageUrl");
+    },
+    // 删除照片
+    onResetImg() {
+      this.form.imageUrl = ''
     }
   }
 };

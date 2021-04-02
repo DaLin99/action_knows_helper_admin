@@ -29,9 +29,11 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button v-if="showData.length > 0" type="primary" @click="importExcel">
-      修改
-    </el-button>
+    <div class="btn-container">
+      <el-button v-if="showData.length > 0" type="primary" @click="importExcel">
+        批量新建
+      </el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -58,3 +60,11 @@ export default {
   }
 };
 </script>
+<style scoped>
+.btn-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0px;
+}
+</style>

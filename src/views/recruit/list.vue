@@ -28,7 +28,7 @@
         v-loading="loading"
         align="center"
         label="ID"
-        width="200"
+        width="80"
         fixed
         element-loading-text="请给我点时间！"
       >
@@ -41,7 +41,11 @@
           <span>{{ scope.row.recuritEndDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="岗位类型">
+      <el-table-column
+        align="center"
+        label="岗位类型"
+        width="150"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.jobType }}</span>
         </template>
@@ -61,17 +65,17 @@
           <span>{{ scope.row.salary }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="邮件地址" width="150">
+      <el-table-column align="center" label="邮件地址" width="180">
         <template slot-scope="scope">
           <span>{{ scope.row.eMail }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="工作地点" width="150">
+      <el-table-column align="center" label="工作地点" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.address }}-{{ scope.row.company }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="发布者" width="150">
+      <el-table-column align="center" label="发布者" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.publisher }}</span>
         </template>
@@ -81,12 +85,12 @@
           <span>{{ scope.row.publishDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="查看次数" width="150">
+      <el-table-column align="center" label="查看次数" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.readNums }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="点赞人数" width="150">
+      <el-table-column align="center" label="点赞人数" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.thumbUpNums }}</span>
         </template>

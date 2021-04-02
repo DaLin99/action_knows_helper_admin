@@ -19,7 +19,7 @@
         v-loading="loading"
         align="center"
         label="ID"
-        width="200"
+        width="80"
         fixed
         element-loading-text="请给我点时间！"
       >
@@ -27,7 +27,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="标题">
+      <el-table-column align="center" label="标题" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.topicTitle }}</span>
         </template>
@@ -37,7 +37,7 @@
           <span>{{ scope.row.topicContent }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="发布者" width="150">
+      <el-table-column align="center" label="发布者" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.userName }}</span>
         </template>
@@ -47,21 +47,22 @@
           <span>{{ scope.row.publishDate }} </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="阅读量" width="150">
+      <el-table-column align="center" label="阅读量" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.readNums }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="点赞数" width="150">
+      <el-table-column align="center" label="点赞数" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.thumbUpNums }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="150">
         <template slot-scope="scope">
-          <el-button type="danger" @click="handleDelete(scope.row.id)"
-            >删除</el-button
-          >
+          <el-button
+            type="danger"
+            @click="handleDelete(scope.row.id)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>

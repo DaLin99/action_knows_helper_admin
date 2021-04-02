@@ -22,8 +22,12 @@
       </el-form-item>
       <el-form-item label="物品类别" prop="lostType">
         <el-select v-model="form.lostType" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+          <el-option
+            v-for="(item,lostIndex) in lostTypeList"
+            :key="item"
+            :label="item"
+            :value="lostIndex + ''"
+          />
         </el-select>
       </el-form-item>
       <el-form-item
@@ -42,19 +46,31 @@
       <el-form-item label="wechat" prop="wechat">
         <el-input v-model="form.wechat" />
       </el-form-item>
-      <img class="img-css" :src="form.imgPath" alt="" />
-
+      <el-form-item label="图片" prop="imgPath">
+        <el-upload
+          class="avatar-uploader"
+          action="#"
+          :show-file-list="false"
+          :on-change="onUpload"
+          :auto-upload="false"
+          :multiple="false"
+        >
+          <img v-if="form.imgPath" :src="form.imgPath" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-form-item>
       <el-form-item v-if="form.status === '0'">
         <el-button type="success" @click="onPass('form')">通过</el-button>
         <el-button type="danger" @click="onReject(form.id)">不通过 </el-button>
       </el-form-item>
       <el-form-item v-else-if="form.status === '1'">
-        <el-button type="primary" @click="onPublish('form')"
-          >修改发布</el-button
-        >
+        <el-button
+          type="primary"
+          @click="onPublish('form')"
+        >修改发布</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
+        <el-button v-if="form.imgPath" type="danger" @click="onResetImg">重新上传图片</el-button>
       </el-form-item>
-
       <el-form-item v-else>
         <el-button type="danger" @click="onDelete()">删除</el-button>
       </el-form-item>
@@ -63,10 +79,11 @@
 </template>
 <script>
 import dayjs from "dayjs";
+import upload from "@/utils/upload";
+
 import {
   publishLostAndFound,
   approve,
-  reject,
   deleteLostAndFound
 } from "@/api/lostAndFound";
 export default {
@@ -105,7 +122,9 @@ export default {
         reason: [
           { require: true, message: "请输入不通过的原因", trigger: "blur" }
         ]
-      }
+      },
+      lostTypeList: ["日用品", "学习书籍", "衣物", "电子产品", "其他"]
+
     };
   },
   created() {
@@ -156,13 +175,21 @@ export default {
       if (code === 1) {
         this.$message("审核不通过");
       }
+    },
+    onUpload(e) {
+      upload.uploadImg(e, this, "form", "imgPath");
+    },
+    // 删除照片
+    onResetImg() {
+      this.form.imgPath = ''
     }
   }
 };
 </script>
 <style scoped>
-.img-css {
+.avatar{
   width: 50%;
   height: 50%;
+  margin:0px 60px 20px 60px ;
 }
 </style>

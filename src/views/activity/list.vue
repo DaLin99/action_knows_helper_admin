@@ -38,13 +38,14 @@
         align="center"
         label="ID"
         fixed
+        width="80"
         element-loading-text="请给我点时间！"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="标题">
+      <el-table-column align="center" label="标题" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.activityTitle }}</span>
         </template>
@@ -54,51 +55,47 @@
           <span>{{ scope.row.activityContent }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报名时间">
+      <el-table-column align="center" label="报名时间" width="110">
         <template slot-scope="scope">
-          <span
-            >{{ scope.row.enterStartDate }} - {{ scope.row.enterEndDate }}</span
-          >
+          <span>{{ scope.row.enterStartDate }} - {{ scope.row.enterEndDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活动时间">
+      <el-table-column align="center" label="活动时间" width="110">
         <template slot-scope="scope">
-          <span
-            >{{ scope.row.activityStartDate }} -
-            {{ scope.row.activityEndDate }}</span
-          >
+          <span>{{ scope.row.activityStartDate }} -
+            {{ scope.row.activityEndDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活动信息">
+      <el-table-column align="center" label="活动信息" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.holder }}-{{ scope.row.activityPlace }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态">
+      <el-table-column align="center" label="状态" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | tagFilter">
             {{ scope.row.status | labelFilter }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报名人数">
+      <el-table-column align="center" label="报名人数" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.list.length }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="查看次数">
+      <el-table-column align="center" label="查看次数" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.readNums }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.list.length !== 0"
+            size="small"
             type="primary"
             @click="showEnterDiag($event, scope.row.id)"
-            >导出报名单</el-button
-          >
+          >导出报名单</el-button>
         </template>
       </el-table-column>
     </el-table>

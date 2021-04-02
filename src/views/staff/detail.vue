@@ -4,8 +4,7 @@
     <el-form ref="form" :model="form" label-width="120px" :rules="rule">
       <el-form-item label="身份类型" prop="userIdentity">
         <el-radio v-model="form.userIdentity" label="0">普通学生</el-radio>
-        <el-radio v-model="form.userIdentity" label="1">团学干部</el-radio>
-        <el-radio v-model="form.userIdentity" label="2">管理员</el-radio>
+        <el-radio v-model="form.userIdentity" label="1">管理员</el-radio>
       </el-form-item>
 
       <el-form-item label="学号/工号" prop="cardId">

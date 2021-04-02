@@ -26,6 +26,7 @@
         v-loading="loading"
         align="center"
         label="ID"
+        width="80"
         fixed
         element-loading-text="请给我点时间！"
       >
@@ -33,17 +34,17 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="时间">
+      <el-table-column align="center" label="时间" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.time }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="物品名称">
+      <el-table-column align="center" label="物品名称" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="地点">
+      <el-table-column align="center" label="地点" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.place }}</span>
         </template>
@@ -60,12 +61,12 @@
           <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="tell" width="150">
+      <el-table-column align="center" label="tell" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.tell }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="wechat" width="150">
+      <el-table-column align="center" label="wechat" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.wechat }}</span>
         </template>
@@ -76,25 +77,24 @@
             v-if="scope.row.status === '2'"
             type="danger"
             @click="onDelete($event, scope.row.id)"
-            >删除</el-button
-          >
+          >删除</el-button>
           <div v-else-if="scope.row.status === '0'">
             <el-button
               type="success"
               @click="onPass($event, scope.row.id, true)"
-              >通过</el-button
-            >
+            >通过</el-button>
             <el-button
               type="danger"
               @click="handleRejectByList($event, scope.row.id)"
-              >不通过
+            >不通过
             </el-button>
           </div>
           <div v-else>
             <el-button type="primary">修改</el-button>
-            <el-button type="danger" @click="onDelete($event, scope.row.id)"
-              >删除</el-button
-            >
+            <el-button
+              type="danger"
+              @click="onDelete($event, scope.row.id)"
+            >删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -110,8 +110,10 @@
       :before-close="handleClose"
       :show-close="true"
     >
-      <detail :form="form" @showDiag="showDiag"
-    /></el-drawer>
+      <detail
+        :form="form"
+        @showDiag="showDiag"
+      /></el-drawer>
 
     <!-- 写原因的弹窗 -->
     <el-dialog
