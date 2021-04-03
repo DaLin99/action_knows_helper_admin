@@ -36,7 +36,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="投递结束时间">
+      <el-table-column align="center" label="投递结束时间" width="180">
         <template slot-scope="scope">
           <span>{{ scope.row.recuritEndDate }}</span>
         </template>
@@ -160,7 +160,7 @@ export default {
 
       if (this.searchValue) {
         const filterData = filterTypeData.filter(item => {
-          const value = `${item.id}${item.jodType}`;
+          const value = `${item.id}${item.jobType}`;
           return value.match(this.searchValue);
         });
         return filterData;

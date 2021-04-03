@@ -102,7 +102,7 @@ export default {
     showData() {
       if (this.searchValue) {
         const filterData = this.list.filter(item => {
-          const value = `${item.id}${item.title}`;
+          const value = `${item.id}${item.topicTitle}`;
           return value.match(this.searchValue);
         });
         return filterData;

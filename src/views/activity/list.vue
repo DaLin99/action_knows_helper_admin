@@ -219,7 +219,7 @@ export default {
 
       if (this.searchValue) {
         const filterData = filterTypeData.filter(item => {
-          const value = `${item.id}${item.title}`;
+          const value = `${item.id}${item.activityTitle}`;
           return value.match(this.searchValue);
         });
         return filterData;

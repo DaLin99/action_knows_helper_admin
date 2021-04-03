@@ -210,7 +210,7 @@ export default {
       );
       if (this.searchValue) {
         filterData = filterData.filter(item => {
-          const value = `${item.id}${item.goodsName}`;
+          const value = `${item.id}${item.title}`;
           return value.match(this.searchValue);
         });
       }
