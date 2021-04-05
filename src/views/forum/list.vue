@@ -14,6 +14,8 @@
       highlight-current-row
       type="index"
       style="width: 100%"
+      :default-sort="{prop: 'id', order: 'descending'}"
+      :sort="{prop: 'id', order: 'descending'}"
     >
       <el-table-column
         v-loading="loading"

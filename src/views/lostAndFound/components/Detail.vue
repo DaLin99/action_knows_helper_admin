@@ -154,8 +154,10 @@ export default {
       this.$refs[ruleForm].validate(async valid => {
         if (valid) {
           await approve(this.form);
-          if (this.form.id) {
+          if (this.form.status === '1') {
             this.$message("修改发布成功!");
+          } else {
+            this.$message("发布成功!");
           }
         } else {
           console.log("error submit!!");
